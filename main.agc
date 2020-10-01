@@ -17,6 +17,10 @@ SetOrientationAllowed( 1, 1, 1, 1 ) // allow both portrait and landscape on mobi
 SetSyncRate( 30, 0 ) // 30fps instead of 60 to save battery
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
+
+// Variables
+score = 0
+
 // 1. Create Colors
 CreateImageColor(1, 255, 0, 0, 255) // RED
 CreateImageColor(2, 0, 255,0, 255) // GREEN
@@ -29,12 +33,12 @@ SetSpriteSize(99, GetVirtualWidth(), GetVirtualHeight())
 
 CreateSprite(1, 1) // RED BOX (index, color)
 SetSpriteSize(1, 50, 50) // Set size 
-redBoxX = 0
-redBoxY = 0
+redBoxX = Random(0, GetVirtualWidth() - GetSpriteWidth(1))
+redBoxY = Random(0, GetVirtualHeight() - GetSpriteHeight(1))
 redBoxSPD = 5
 redBoxDirX =  1
 redBoxDirY = 1
-
+SetSpritePosition(1, redBoxX, redBoxY) //starts from random position)
 
 CreateSprite(2, 3) // BlUE BOX
 SetSpriteSize(2, 100, 100) 
@@ -93,9 +97,24 @@ do
 	endif
 	
 	
-	SetSpritePosition(1,redBoxX, redBoxY)
+	
+	
+	// 6. Collison
+	// Test if there is a collision
+	if GetSpriteCollision(1, 2)
+		//Print("HIT!")
+		// Resets the positions
+		redBoxX = Random(0, GetVirtualWidth() - GetSpriteWidth(1))
+		redBoxY = Random(0, GetVirtualHeight() - GetSpriteHeight(1))
+		blueBoxX = GetVirtualWidth()/2 - GetSpriteWidth(2)/2
+		blueBoxY = GetVirtualHeight()/2 - GetSpriteHeight(2)/2
+		score = score + 1
+	endif
+    SetSpritePosition(1,redBoxX, redBoxY)
 	SetSpritePosition(2, blueBoxX, blueBoxY)
 	
-    
+	Printc("Score: ")
+	Print(score)
+	
     Sync()
 loop
