@@ -24,8 +24,17 @@ CreateImageColor(3, 0, 0, 255, 255) // BLUE
 CreateImageColor(99, 100, 100, 100, 255) // GREY
 
 // 2. Create Sprites
+CreateSprite(99, 99) // GREY BACKGROUND
+SetSpriteSize(99, GetVirtualWidth(), GetVirtualHeight())
+
 CreateSprite(1, 1) // RED BOX (index, color)
 SetSpriteSize(1, 50, 50) // Set size 
+redBoxX = 0
+redBoxY = 0
+redBoxSPD = 5
+redBoxDirX =  1
+redBoxDirY = 1
+
 
 CreateSprite(2, 3) // BlUE BOX
 SetSpriteSize(2, 100, 100) 
@@ -56,7 +65,7 @@ do
 		blueBoxX = GetVirtualWidth() - GetSpriteWidth(2)
 	endif
 	if blueBoxX < 0 
-		blueBoxX = 0
+		blueBoxX = 0	
 	endif
 	if blueBoxY > GetVirtualHeight() - GetSpriteHeight(2)
 		blueBoxY = GetVirtualHeight() - GetSpriteHeight(2)
@@ -65,6 +74,26 @@ do
 		blueBoxY = 0
 	endif
 	
+	// 5. Make red box bounce around
+	// left and right movement
+	redBoxX = redBoxX + redBoxDirX * redBoxSPD
+	if redBoxX > GetVirtualWidth() - GetSpriteWidth(1)
+		redBoxDirX = - 1
+	endif
+	if redBoxX < 0 
+		redBoxDirX = 1
+	endif
+	// up and down movement
+	redBoxY = redBoxY + redBoxDirY * redBoxSPD
+	if redBoxY > GetVirtualHeight() - GetSpriteHeight(1)
+		redBoxDirY = - 1
+	endif
+	if redBoxY < 0 
+		redBoxDirY = 1
+	endif
+	
+	
+	SetSpritePosition(1,redBoxX, redBoxY)
 	SetSpritePosition(2, blueBoxX, blueBoxY)
 	
     
